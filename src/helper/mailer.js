@@ -22,14 +22,14 @@ const transporter = nodemailer.createTransport({
 //            <p>Please click the link below to verify your email address:</p>
 //            <a href="${verificationUrl}">Verify Email</a>`,
 //     };
-//     console.log("mailoptions...")
-//     console.log(mailOptions)
+//     // console.log("mailoptions...")
+//     // console.log(mailOptions)
 
 //     return transporter.sendMail(mailOptions, (error, info) => {
 //         if (error) {
 //             console.error('Error sending email:', error);
 //         } else {
-//             console.log('Email sent:', info.response);
+//             // console.log('Email sent:', info.response);
 //         }
 //     });
 // };
@@ -121,14 +121,14 @@ const sendVerificationEmail = (user, verificationToken, type) => {
         // `,
     };
 
-    console.log("mailoptions... done");
-    // console.log(mailOptions);
+    // console.log("mailoptions... done");
+    // // console.log(mailOptions);
 
     return transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Error sending email:', error);
         } else {
-            console.log('Email sent:', info.response);
+            // console.log('Email sent:', info.response);
         }
     });
 };

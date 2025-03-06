@@ -13,10 +13,10 @@ import mongoose, { isValidObjectId } from "mongoose";
 
 // Todo
 const getAllPosts = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 3, query = "", sortBy = "createdAt", sortType = "desc" } = req.query;
+    const { page = 1, limit = 4, query = "", sortBy = "createdAt", sortType = "desc" } = req.query;
     const userId = req.user?._id
-    console.log(req.query)
-    console.log("..............................................................")
+    // console.log(req.query)
+    // console.log("....")
 
     // Convert pagination params to integers
     const pageNumber = parseInt(page, 10);
@@ -106,7 +106,7 @@ const getAllPosts = asyncHandler(async (req, res) => {
                 }
             }
         ]);
-        console.log(posts)
+        // console.log(posts)
         // Get the total number of posts matching the filter
         const totalPosts = await Post.countDocuments();
 
@@ -120,7 +120,7 @@ const getAllPosts = asyncHandler(async (req, res) => {
             "Posts fetched successfully"));
     } 
     catch(error){
-        console.log(error);
+        // console.log(error);
         return res
             .status(500)
             .json(new ApiError(500, "Something went wrong while fetching posts", error));
@@ -310,8 +310,8 @@ const getPostsByUsername = asyncHandler(async (req, res) => {
     const { page = 1, limit = 3, query = "", sortBy = "createdAt", sortType = "desc" } = req.query;
     const { username } = req.params;
     const userId = req.user?._id; // Assumes req.user contains the current user data
-    console.log("userId")
-    console.log(userId)
+    // console.log("userId")
+    // console.log(userId)
 
     try {
         // Fetch user by username to get user ID
@@ -391,7 +391,7 @@ const getPostsByUsername = asyncHandler(async (req, res) => {
             .status(200)
             .json(new ApiResponse(200, allPosts, "All posts fetched successfully"));
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         return res
             .status(500)
             .json(new ApiError(500, "An unexpected error occurred. Please try again later", error));
@@ -403,9 +403,9 @@ const publishPost = asyncHandler(async (req, res) => {
     const { description } = req.body;
     const postLocalFilePath = req.file?.path;
 
-    console.log("Step 1: Received request to publish post");
-    console.log("Step 2: Extracted description:", description);
-    console.log("Step 3: Extracted post file path:", postLocalFilePath);
+    // console.log("Step 1: Received request to publish post");
+    // console.log("Step 2: Extracted description:", description);
+    // console.log("Step 3: Extracted post file path:", postLocalFilePath);
 
     if (!postLocalFilePath) {
         console.error("Step 4: Validation failed - Post file is missing");
@@ -418,9 +418,9 @@ const publishPost = asyncHandler(async (req, res) => {
     }
 
     try {
-        console.log("Step 6: Uploading post to Cloudinary...");
+        // console.log("Step 6: Uploading post to Cloudinary...");
         const postFile = await uploadOnCloudinary(postLocalFilePath);
-        console.log("Step 7: Uploaded file details:", postFile);
+        // console.log("Step 7: Uploaded file details:", postFile);
 
         if (req.customConnectionClosed) {
             const publicIdOfPost = postFile.url.split("/").pop().split(".")[0];
@@ -434,20 +434,20 @@ const publishPost = asyncHandler(async (req, res) => {
             return res.status(500).json(new ApiError(500, "Error while uploading post file"));
         }
 
-        console.log("Step 10: Creating post document in database...");
+        // console.log("Step 10: Creating post document in database...");
         const post = await Post.create({
             postFile: postFile.url,
             description: description || "",
             owner: req.user?._id,
         });
-        console.log("Step 11: Created post document:", post);
+        // console.log("Step 11: Created post document:", post);
 
         if (!post) {
             console.error("Step 12: Post creation failed in database");
             return res.status(500).json(new ApiError(500, "Error while publishing post file"));
         }
 
-        console.log("Step 13: Successfully published post");
+        // console.log("Step 13: Successfully published post");
         return res.status(200).json(new ApiResponse(200, post, "Post published successfully"));
     } catch (error) {
         console.error("Error in publishPost:", error);
@@ -460,9 +460,9 @@ const updatePost = asyncHandler(async (req, res) => {
     const { description } = req.body;
     const { postId } = req.params;
 
-    console.log("Step 1: Received request to update post");
-    console.log("Step 2: Post ID:", postId);
-    console.log("Step 3: New description:", description);
+    // console.log("Step 1: Received request to update post");
+    // console.log("Step 2: Post ID:", postId);
+    // console.log("Step 3: New description:", description);
 
     try {
         if (!isValidObjectId(postId)) {
@@ -470,16 +470,16 @@ const updatePost = asyncHandler(async (req, res) => {
             return res.status(400).json(new ApiError(400, "Invalid post ID"));
         }
 
-        console.log("Step 5: Updating post in database...");
+        // console.log("Step 5: Updating post in database...");
         const post = await Post.findByIdAndUpdate(postId, { description: description || "" }, { new: true });
-        console.log("Step 6: Updated post details:", post);
+        // console.log("Step 6: Updated post details:", post);
 
         if (!post) {
             console.error("Step 7: Post not found or failed to update");
             return res.status(500).json(new ApiError(500, "Error while updating post"));
         }
 
-        console.log("Step 8: Successfully updated post");
+        // console.log("Step 8: Successfully updated post");
         return res.status(200).json(new ApiResponse(200, post, "Post updated successfully"));
     } catch (error) {
         console.error("Error in updatePost:", error);
@@ -491,8 +491,8 @@ const updatePost = asyncHandler(async (req, res) => {
 const deletePost = asyncHandler(async (req, res) => {
     const { postId } = req.params;
 
-    console.log("Step 1: Received request to delete post");
-    console.log("Step 2: Post ID:", postId);
+    // console.log("Step 1: Received request to delete post");
+    // console.log("Step 2: Post ID:", postId);
 
     try {
         if (!isValidObjectId(postId)) {
@@ -500,9 +500,9 @@ const deletePost = asyncHandler(async (req, res) => {
             return res.status(400).json(new ApiError(400, "Invalid post ID"));
         }
 
-        console.log("Step 4: Deleting post document from database...");
+        // console.log("Step 4: Deleting post document from database...");
         const post = await Post.findByIdAndDelete(postId);
-        console.log("Step 5: Deleted post details:", post);
+        // console.log("Step 5: Deleted post details:", post);
 
         if (!post) {
             console.error("Step 6: Post not found");
@@ -510,27 +510,27 @@ const deletePost = asyncHandler(async (req, res) => {
         }
 
         const publicIdOfPost = post.postFile.split("/").pop().split(".")[0];
-        console.log("Step 7: Public ID of Cloudinary file:", publicIdOfPost);
+        // console.log("Step 7: Public ID of Cloudinary file:", publicIdOfPost);
 
-        console.log("Step 8: Deleting file from Cloudinary...");
+        // console.log("Step 8: Deleting file from Cloudinary...");
         await destroyFromCloudinary(publicIdOfPost);
 
-        console.log("Step 9: Deleting likes associated with the post...");
+        // console.log("Step 9: Deleting likes associated with the post...");
         const deletedLikes = await Like.deleteMany({ post: post._id });
 
-        console.log("Step 10: Fetching comments associated with the post...");
+        // console.log("Step 10: Fetching comments associated with the post...");
         const comments = await Comment.find({ post: post._id });
-        console.log("Step 11: Associated comments:", comments);
+        // console.log("Step 11: Associated comments:", comments);
 
         const commentIds = comments.map((comment) => comment._id);
 
-        console.log("Step 12: Deleting likes on comments...");
+        // console.log("Step 12: Deleting likes on comments...");
         const deletedCommentLikes = await Like.deleteMany({ comment: { $in: commentIds } });
 
-        console.log("Step 13: Deleting comments...");
+        // console.log("Step 13: Deleting comments...");
         const deletedComments = await Comment.deleteMany({ post: post._id });
 
-        console.log("Step 14: Successfully deleted post and associated data", {deletedLikes, deletedComments, deletedCommentLikes});
+        // console.log("Step 14: Successfully deleted post and associated data", {deletedLikes, deletedComments, deletedCommentLikes});
         return res.status(200).json(
             new ApiResponse(200, { post, deletedLikes, comments, deletedCommentLikes, deletedComments }, "Post deleted successfully")
         );

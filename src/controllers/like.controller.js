@@ -54,7 +54,7 @@ const getPostLikes = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, likes , "Comments fetched successfully"));
     } 
     catch(error) {
-        console.log(error);
+        // console.log(error);
         return res
             .status(500)
             .json(new ApiError(500, "Something went wrong while fetching comments", error));

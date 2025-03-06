@@ -2,7 +2,7 @@ import mongoose, {Schema} from "mongoose";
 
 const noteSchema = new Schema(
     {
-        user: {
+        owner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User" 
         },
@@ -14,9 +14,9 @@ const noteSchema = new Schema(
             type: String,
             required: true
         },
-        tag: {
+        theme: {
             type: String,
-            default: "General"
+            default: "black"
         }
     },
     {

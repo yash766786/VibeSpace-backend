@@ -6,11 +6,11 @@ import { ApiError } from "../utils/ApiError.js";
 const verifyToken = asyncHandler(async (req, res, next) =>{
     try {
         // get the user from the session or jwt token and add id to req object
-        console.log("checking in cookies");
-        console.log(req.cookies);
+        // console.log("checking in cookies");
+        // console.log(req.cookies);
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
         // const token = req.cookies?.accessToken 
-        console.log("token", {token})
+        // console.log("token", {token})
         if(!token){
             return res
             .status(401)
@@ -20,7 +20,7 @@ const verifyToken = asyncHandler(async (req, res, next) =>{
         // verify token 
         const decodedToken = Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         req.user = decodedToken
-        console.log("decodedToken", {decodedToken})
+        // console.log("decodedToken", {decodedToken})
         next();
 
     } 
@@ -34,10 +34,10 @@ const verifyToken = asyncHandler(async (req, res, next) =>{
 
 const VerifyResetToken = asyncHandler(async (req, res, next) => {
     try {
-        console.log("searching in cookie.", req.cookies)
+        // console.log("searching in cookie.", req.cookies)
         // Step 1: Retrieve the token from cookies or Authorization header
         const token = req.cookies?.resetToken || req.header("Authorization")?.replace("Bearer ", "");
-        console.log("token", {token})
+        // console.log("token", {token})
 
         if (!token) {
             return res
@@ -54,7 +54,7 @@ const VerifyResetToken = asyncHandler(async (req, res, next) => {
                 .status(401)
                 .json(new ApiError(401, "Invalid token type. Please use a valid password reset token."));
         }
-        console.log("decodedToken", decodedToken);
+        // console.log("decodedToken", decodedToken);
 
         // Step 4: Attach email to req object
         req.userEmail = decodedToken.email;

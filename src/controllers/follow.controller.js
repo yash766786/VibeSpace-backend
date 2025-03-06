@@ -20,9 +20,9 @@ const toggleFollowUser = asyncHandler(async (req, res) => {
                 .status(404)
                 .json(new ApiError(404, "User not found", error));
         }
-        // console.log(userId)
-        // console.log("username.....")
-        // console.log(userToFollow)
+        // // console.log(userId)
+        // // console.log("username.....")
+        // // console.log(userToFollow)
 
         if (userToFollow._id.toString() === userId) {
             return res
@@ -36,13 +36,13 @@ const toggleFollowUser = asyncHandler(async (req, res) => {
             following: userToFollow._id,
         });
 
-        console.log("follow....")
+        // console.log("follow....")
         
         
         if (existingFollow) {
             // Unfollow user if already followed
             const follow = await Follow.findByIdAndDelete(existingFollow)
-            console.log(follow)
+            // console.log(follow)
             return res
                 .status(200)
                 .json(new ApiResponse(200, follow, `You have unfollowed ${username}`));
@@ -53,14 +53,14 @@ const toggleFollowUser = asyncHandler(async (req, res) => {
                 follower: userId,
                 following: userToFollow._id,
             });
-            console.log(follow)
+            // console.log(follow)
             return res
                 .status(200)
                 .json(new ApiResponse(200, follow, `You are now following ${username}`));
         }
     }
     catch (error) {
-        console.log(error)
+        // console.log(error)
         return res
             .status(500)
             .json(new ApiError(500, `something went wrong follow/unfollow ${username}`, error))
@@ -85,8 +85,8 @@ const getFollowers = asyncHandler(async (req, res) => {
         const followers = await Follow.find({ following: user._id })
             .populate("follower", "username fullname avatar")
 
-        console.log("populated followers .")
-        console.log(followers)
+        // console.log("populated followers .")
+        // console.log(followers)
 
         return res
             .status(200)
@@ -94,7 +94,7 @@ const getFollowers = asyncHandler(async (req, res) => {
 
     }
     catch (error) {
-        console.log(error)
+        // console.log(error)
         return res
             .status(500)
             .json(new ApiError(500, "something went wrong while getting follwers", error))
@@ -125,7 +125,7 @@ const getFollowings = asyncHandler(async (req, res) => {
 
     }
     catch (error) {
-        console.log(error)
+        // console.log(error)
         return res
             .status(500)
             .json(new ApiError(500, "something went wrong while getting follwers", error))

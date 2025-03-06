@@ -19,14 +19,14 @@ const uploadOnCloudinary = async (localFilePath) =>{
         })
 
         // file has been uploaded successfully
-        console.log("file is uploaded on cloudinary");
+        // console.log("file is uploaded on cloudinary");
         fs.unlinkSync(localFilePath);
 
         return response
     } 
     catch(error){
         fs.unlinkSync(localFilePath);
-        console.log("Error uploading file on Cloudinary: ", error);
+        // console.log("Error uploading file on Cloudinary: ", error);
         return null;
     }
 }
@@ -38,11 +38,11 @@ const destroyFromCloudinary = async (publicId) =>{
         // delete the file from Cloudinary
         const response = await cloudinary.uploader.destroy(publicId);
 
-        console.log("file is deleted from cloudinary ");
+        // console.log("file is deleted from cloudinary ");
         return response;
     } 
     catch(error){
-        console.log("Error deleting file from Cloudinary: ", error);
+        // console.log("Error deleting file from Cloudinary: ", error);
         return null;
     }
 }

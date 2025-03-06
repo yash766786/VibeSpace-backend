@@ -21,6 +21,7 @@ const router = Router()
 
 router.route("/register").post(upload.single("avatar"), registerUser)
 router.route("/login").post(loginUser)
+router.route("/forgot-password-reset").post(initiateForgotPasswordReset)
 
 // secured routes
 router.route('/verify-email').post(verifyToken, verifyEmail);
@@ -35,7 +36,6 @@ router.route("/check-username/:username").get(verifyToken, checkUsernameExist)
 router.route("/u/:username").get(verifyToken, getUserProfile)
 
 // forgot password
-router.route("/forgot-password-reset").post(initiateForgotPasswordReset)
 router.route("/reset-password").post(VerifyResetToken, verifyCodeAndResetPassword)
 router.route("/reset-password-email").get(VerifyResetToken, getEmailForResetPassword)
 
